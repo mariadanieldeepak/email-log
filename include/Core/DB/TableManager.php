@@ -265,4 +265,31 @@ class TableManager {
 		return $deleted_rows_count;
 	}
 
+	/**
+	 * Fetch logs items by a list of IDs.
+	 *
+	 * The columns must be specified to fetch the log items.
+	 *
+	 * @param array $columns List of Column names to be fetched.
+	 * @param array $ids     List of Log IDs to be fetched.
+	 * @return array         Log items.
+	 */
+	public function fetch_log_item_by_ids( $columns, $ids ) {
+		global $wpdb;
+		$table_name   = $this->get_log_table_name();
+
+		$ids          = array_map( 'absint', $ids );
+		// TODO: Remove $columns if not required.
+		$columns      = array_map( 'trim', $columns );
+		$ids_list     = implode( ',', $ids );
+		$columns_list = implode( '', $columns );
+
+		$ids_list        = esc_sql( $ids_list );
+
+		// Can't use wpdb->prepare for the below query. If used it results in this bug
+		// https://github.com/sudar/email-log/issues/13
+
+		return $wpdb->get_results( "SELECT * FROM $table_name where id IN ( $ids_list )", 'ARRAY_N' ); //@codingStandardsIgnoreLine
+	}
+
 }
