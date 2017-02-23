@@ -265,6 +265,16 @@ class LogListTable extends \WP_List_Table {
 			'delete'     => __( 'Delete', 'email-log' ),
 			'delete-all' => __( 'Delete All Logs', 'email-log' ),
 		);
+
+		/**
+		 * Hook to add custom bulk actions in View Logs page.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $param List of bulk actions.
+		 */
+		$actions = apply_filters( 'el_bulk_actions', $actions );
+
 		return $actions;
 	}
 
