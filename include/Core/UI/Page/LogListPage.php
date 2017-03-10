@@ -22,12 +22,12 @@ class LogListPage extends BasePage {
 	/**
 	 * Delete Log Nonce Field.
 	 */
-	const DELETE_LOG_NONCE_FIELD = 'el-delete-email-log-nonce';
+	const NONCE_FIELD = 'el-log-list-page-nonce';
 
 	/**
 	 * Delete Log Action.
 	 */
-	const DELETE_LOG_ACTION = 'el-delete-email-log';
+	const ACTION = 'el-log-list-page';
 
 	/**
 	 * Setup hooks.
@@ -97,7 +97,7 @@ class LogListPage extends BasePage {
 			<form id="email-logs-filter" method="get">
 				<input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ); ?>"/>
 				<?php
-				wp_nonce_field( self::DELETE_LOG_ACTION, self::DELETE_LOG_NONCE_FIELD );
+				wp_nonce_field( self::ACTION, self::NONCE_FIELD );
 				$this->log_list_table->display();
 				?>
 			</form>
@@ -147,13 +147,13 @@ class LogListPage extends BasePage {
 	 * Verify nonce for all bulk actions.
 	 */
 	public function check_nonce() {
-		if ( ! isset( $_REQUEST[ self::DELETE_LOG_NONCE_FIELD ] ) ) {
+		if ( ! isset( $_REQUEST[ self::NONCE_FIELD ] ) ) {
 			return false;
 		}
 
-		$nonce = $_REQUEST[ self::DELETE_LOG_NONCE_FIELD ];
+		$nonce = $_REQUEST[ self::NONCE_FIELD ];
 
-		if ( ! wp_verify_nonce( $nonce, self::DELETE_LOG_ACTION ) ) {
+		if ( ! wp_verify_nonce( $nonce, self::ACTION ) ) {
 			wp_die( 'Cheating, Huh? ' );
 		}
 
@@ -167,7 +167,7 @@ class LogListPage extends BasePage {
 	 */
 	public function get_nonce_args() {
 		return array(
-			self::DELETE_LOG_NONCE_FIELD => wp_create_nonce( self::DELETE_LOG_ACTION ),
+			self::NONCE_FIELD => wp_create_nonce( self::ACTION ),
 		);
 	}
 
