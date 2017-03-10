@@ -172,6 +172,17 @@ class LogListPage extends BasePage {
 	}
 
 	/**
+	 * Get TableManager instance.
+	 *
+	 * @return TableManager TableManager instance.
+	 */
+	public function get_table_manager() {
+		$email_log = email_log();
+
+		return $email_log->table_manager;
+	}
+
+	/**
 	 * Saves Screen options.
 	 *
 	 * @since Genesis
